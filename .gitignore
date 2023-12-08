@@ -1,0 +1,21 @@
+# Write a list of gitignore files for Django projects and vscode
+
+# Django
+.DS_Store
+*.pyc
+*.swp
+*.swo
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+static
+*.py[cod]
+*$py.class
+*.so
+
+# vscode
+.vscode/
