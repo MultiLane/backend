@@ -1,10 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
-USDC_DECIMALS = settings.USDC_DECIMALS
 
 
 class User(AbstractUser):
@@ -32,13 +30,13 @@ class User(AbstractUser):
         }
     
     def allowance(self):
-        return self.balance - (self.expense + self.paid)
+        return self.balance() - (self.expense + self.paid)
 
     def bill(self):
-        return round((self.expense - self.paid)/10**USDC_DECIMALS, 2)
+        return (self.expense - self.paid)
     
     def balance(self):
-        return round((self.deposit - (self.expense - self.paid))/10**USDC_DECIMALS, 2)
+        return self.deposit - (self.expense - self.paid)
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

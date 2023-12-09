@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from .serializers import FetchNonceSerializer
 from eth_account.messages import encode_defunct
 from eth_account import Account
-from .models import USDC_DECIMALS, User, Transaction, Fund, WhitelistDomain, WhitelistAddress, Chain, SCWAddress, RPCInfo
+from .models import User, Transaction, Fund, WhitelistDomain, WhitelistAddress, Chain, SCWAddress, RPCInfo
 from eth_hash.auto import keccak
 from rest_framework.response import Response
 import requests, pickle, os
@@ -164,7 +164,7 @@ class ManageFunds(APIView):
         data = {
             'bill': user.bill(),
             'balance': user.balance(),
-            'fund': [{'type': f.type, 'status': f.status, 'date': f.date.strftime("%d-%m-%Y %H:%M:%S"), 'amount': round(f.amount/10**USDC_DECIMALS, 2), 'link': f.link} for f in funds],
+            'fund': [{'type': f.type, 'status': f.status, 'date': f.date.strftime("%d-%m-%Y %H:%M:%S"), 'amount': f.amount, 'link': f.link} for f in funds],
         }
         return Response(data)
 
@@ -207,7 +207,7 @@ class Withdraw(APIView):
                 user = scw_address.user
                 address = scw_address.address
         amount = int(request.data['amount'])
-        if amount > user.balance()*10**USDC_DECIMALS:
+        if amount > user.allowance():
             return Response({'result': False})
         else:
             hex_value = (web3.to_hex(web3.solidity_keccak(['address', 'uint256'], [web3.to_checksum_address(address), amount])))
@@ -318,7 +318,7 @@ class RPCBalance(APIView):
             if address.lower() == "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee":
                 modifided_values.append(10**17) # Fake value for ETH so that UI allows to trigger transaction
             if address.lower() == usdc_address.lower():
-                modifided_values.append(int(user.balance()*10**USDC_DECIMALS))
+                modifided_values.append(int(user.balance()))
             else:
                 modifided_values.append(values[1][i])
         bytes_value = encode(['address[]', 'uint256[]'], (values[0],modifided_values))
@@ -401,7 +401,7 @@ class BillTransaction(APIView):
         Post Transaction 
         """
         scw_address = request.data['address']
-        chain_id = request.data['chain_id']
+        chain_id = int(request.data['chain_id'])
         chain = Chain.objects.get(chain_id=chain_id)
         scw = SCWAddress.objects.get(address=scw_address, chain=chain)
         user = scw.user

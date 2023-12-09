@@ -164,5 +164,4 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=365),
 }
 
-USDC_DECIMALS = 6
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
