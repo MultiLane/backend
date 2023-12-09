@@ -33,7 +33,7 @@ class RPCInfoAdmin(admin.ModelAdmin):
     list_display = ('url', 'rpc_chain_id')
 
 class FundsAdmin(admin.ModelAdmin):
-    list_display = ('user',)
+    list_display = ('user', 'amount', 'type', 'status')
     search_fields = ('user__email', 'user__address')
 
 class ChainAdmin(admin.ModelAdmin):
