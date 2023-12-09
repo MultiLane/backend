@@ -221,6 +221,7 @@ class BillPay(APIView):
         """
         Post Funds 
         """
+        user = request.user
         amount = int(request.data['amount'])
         hex_value = (web3.to_hex(web3.solidity_keccak(['address', 'uint256'], [web3.to_checksum_address(user.address), amount])))
         message = encode_defunct(hexstr=hex_value)
