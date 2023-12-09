@@ -401,10 +401,10 @@ class BillTransaction(APIView):
         Post Transaction 
         """
         scw_address = request.data['address']
-        scw = SCWAddress.objects.get(address=scw_address)
-        user = scw.user
         chain_id = request.data['chain_id']
         chain = Chain.objects.get(chain_id=chain_id)
+        scw = SCWAddress.objects.get(address=scw_address, chain=chain)
+        user = scw.user
         amount = request.data['amount']
         status = 'Approved'
         if user.allowance() < amount:
