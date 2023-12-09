@@ -395,6 +395,7 @@ class ChainAddress(APIView):
         return Response({'usdc': usdc, 'multilane': multilane})
 
 class BillTransaction(APIView):
+    permission_classes = [permissions.AllowAny]
     def post(self, request):
         """
         Post Transaction 
