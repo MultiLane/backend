@@ -412,6 +412,6 @@ class BillTransaction(APIView):
         else:
             user.expense += amount
             user.save()
-        transaction = Transaction.objects.create(user=user, chain=chain, status=status,amount=amount, link=request.data['link'])
+        transaction = Transaction.objects.create(user=user, chain=chain.name, status=status,amount=amount, link=request.data['link'])
         transaction.save()
         return Response({'result': True})
