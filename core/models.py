@@ -30,13 +30,13 @@ class User(AbstractUser):
         }
     
     def allowance(self):
-        return self.balance() - (self.expense + self.paid)
+        return self.balance()
 
     def bill(self):
         return (self.expense - self.paid)
     
     def balance(self):
-        return self.deposit - (self.expense - self.paid)
+        return self.deposit - self.expense
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
