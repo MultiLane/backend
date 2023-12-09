@@ -16,6 +16,7 @@ static
 *.py[cod]
 *$py.class
 *.so
+session_data.pickle
 
 # vscode
 .vscode/

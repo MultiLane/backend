@@ -115,3 +115,38 @@ class Chain(models.Model):
         self.mailbox_address = self.mailbox_address.lower()
         self.multilane_address = self.multilane_address.lower()
         super().save(*args, **kwargs)
+
+class SCWAddress(models.Model):
+    address = models.CharField(max_length=255)
+    chain = models.ForeignKey(Chain, on_delete=models.SET_NULL, null=True)
+    nonce = models.IntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.address
+
+class WhitelistAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    chain = models.ForeignKey(Chain, on_delete=models.SET_NULL, null=True)
+    address = models.CharField(max_length=255)
+    value = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.address
+
+class WhitelistDomain(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    domain = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.domain
+
+class RPCInfo(models.Model):
+    """
+    This acts like a cache for RPC information. It is used to store the chain id of the chain
+    """
+    url = models.CharField(max_length=255, blank=True, null=True)
+    rpc_chain_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.url
