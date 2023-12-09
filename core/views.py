@@ -9,6 +9,7 @@ from rest_framework.response import Response
 import requests, pickle, os
 from web3 import Web3
 from django.db import models
+from eth_abi import encode, decode
 
 web3 = Web3()
 
