@@ -163,7 +163,7 @@ class ManageFunds(APIView):
         data = {
             'bill': user.bill(),
             'balance': user.balance(),
-            'fund': [{'type': f.type, 'status': f.status, 'date': f.date.strftime("%d-%m-%Y %H:%M:%S"), 'amount': f.amount, 'link': f.link} for f in funds],
+            'fund': [{'type': f.type, 'status': f.status, 'date': f.date.strftime("%d-%m-%Y %H:%M:%S"), 'amount': round(f.amount/10**USDC_DECIMALS, 2), 'link': f.link} for f in funds],
         }
         return Response(data)
 
