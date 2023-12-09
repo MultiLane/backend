@@ -8,6 +8,7 @@ from eth_hash.auto import keccak
 from rest_framework.response import Response
 import requests, pickle, os
 from web3 import Web3
+from django.db import models
 
 web3 = Web3()
 
