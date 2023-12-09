@@ -405,7 +405,7 @@ class BillTransaction(APIView):
         chain = Chain.objects.get(chain_id=chain_id)
         scw = SCWAddress.objects.get(address=scw_address, chain=chain)
         user = scw.user
-        amount = request.data['amount']
+        amount = int(request.data['amount'])
         status = 'Approved'
         if user.allowance() < amount:
             status = 'Rejected'
