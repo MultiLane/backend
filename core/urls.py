@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import Login, Profile, TransactionView, ManageFunds, Withdraw, \
-    BillPay, ProfileConfiguration, ProfilePublic, RPCBalance, FetchSCW, ChainAddress
+    BillPay, ProfileConfiguration, ProfilePublic, RPCBalance, FetchSCW, ChainAddress, BillTransaction
 
 urlpatterns = [
     path('login/', Login.as_view(), name='login'),
@@ -11,6 +11,7 @@ urlpatterns = [
     path('funds/', ManageFunds.as_view(), name='funds'),
     path('withdraw/', Withdraw.as_view(), name='withdraw'),
     path('billpay/', BillPay.as_view(), name='billpay'),
+    path("billtransaction/", BillTransaction.as_view(), name='billtransaction'),
     path('rpc/balance/', RPCBalance.as_view(), name='balance'),
     path('scw/address/', FetchSCW.as_view(), name='scw_address'),
     path('chain/address/', ChainAddress.as_view(), name='usdc_address'),

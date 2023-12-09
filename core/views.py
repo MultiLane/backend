@@ -393,3 +393,24 @@ class ChainAddress(APIView):
         usdc = {c.chain_id: c.usdc_address for c in chain}
         multilane = {c.chain_id: c.multilane_address for c in chain}
         return Response({'usdc': usdc, 'multilane': multilane})
+
+class BillTransaction(APIView):
+    def post(self, request):
+        """
+        Post Transaction 
+        """
+        scw_address = request.data['address']
+        scw = SCWAddress.objects.get(scw_address=scw_address)
+        user = scw.user
+        chain_id = request.data['chain_id']
+        chain = Chain.objects.get(chain_id=chain_id)
+        amount = request.data['amount']
+        status = 'Approved'
+        if user.allowance() < amount:
+            status = 'Rejected'
+        else:
+            user.expense += amount
+            user.save()
+        transaction = Transaction.objects.create(user=user, chain=chain, status=status,amount=amount, link=request.data['link'])
+        transaction.save()
+        return Response({'result': True})
