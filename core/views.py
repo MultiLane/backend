@@ -401,7 +401,7 @@ class BillTransaction(APIView):
         Post Transaction 
         """
         scw_address = request.data['address']
-        scw = SCWAddress.objects.get(scw_address=scw_address)
+        scw = SCWAddress.objects.get(address=scw_address)
         user = scw.user
         chain_id = request.data['chain_id']
         chain = Chain.objects.get(chain_id=chain_id)
